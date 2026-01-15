@@ -35,6 +35,10 @@
 - `PUT /api/users/:id/block` - Заблокировать пользователя (администратор или сам пользователь)
 - `PUT /api/users/:id/unblock` - Разблокировать пользователя (администратор или сам пользователь)
 
+### Документация API (Swagger)
+
+- `GET /api-docs` - Интерактивный интерфейс документации API Swagger
+
 ## Инструкции по установке
 
 1. Склонируйте репозиторий
@@ -118,6 +122,38 @@ src/
 ├── utils/                # Вспомогательные функции
 ├── config/               # Конфигурационные файлы
 └── app.ts                # Главный файл приложения
+```
+
+## Документация API (Swagger)
+
+API документация доступна через Swagger UI по адресу `http://localhost:3000/api-docs` после запуска приложения.
+
+Для добавления новой документации к API эндпоинтам используйте аннотации JSDoc в формате OpenAPI в контроллерах.
+
+Пример аннотации:
+```javascript
+/**
+ * @openapi
+ * /api/auth/register:
+ *   post:
+ *     tags:
+ *       - Authentication
+ *     summary: Register a new user
+ *     description: Creates a new user account in the system
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/RegisterRequest'
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AuthResponse'
+ */
 ```
 
 ## Запуск в продакшене

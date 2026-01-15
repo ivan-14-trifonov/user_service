@@ -3,6 +3,55 @@ import { UserService } from '../services/UserService';
 
 const userService = new UserService();
 
+/**
+ * @openapi
+ * /api/users/{id}:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Get user by ID
+ *     description: Retrieve a user's details by their ID. Accessible by admin or the user themselves.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Numeric ID of the user to retrieve
+ *     responses:
+ *       200:
+ *         description: User retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - no token provided
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       403:
+ *         description: Forbidden - insufficient permissions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 export const getUserById = async (req: Request, res: Response) => {
   try {
     const userId = parseInt(req.params.id);
@@ -27,6 +76,44 @@ export const getUserById = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @openapi
+ * /api/users:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Get all users
+ *     description: Retrieve a list of all users. Admin only.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of users retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - no token provided
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       403:
+ *         description: Forbidden - insufficient permissions (requires admin)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
     const users = await userService.findAll();
@@ -48,6 +135,61 @@ export const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @openapi
+ * /api/users/{id}/block:
+ *   put:
+ *     tags:
+ *       - Users
+ *     summary: Block a user
+ *     description: Block a user account by setting its status to inactive. Accessible by admin or the user blocking themselves.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Numeric ID of the user to block
+ *     responses:
+ *       200:
+ *         description: User blocked successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'User blocked successfully'
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - no token provided
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       403:
+ *         description: Forbidden - insufficient permissions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 export const blockUser = async (req: Request, res: Response) => {
   try {
     const userId = parseInt(req.params.id);
@@ -80,6 +222,61 @@ export const blockUser = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @openapi
+ * /api/users/{id}/unblock:
+ *   put:
+ *     tags:
+ *       - Users
+ *     summary: Unblock a user
+ *     description: Unblock a user account by setting its status to active. Accessible by admin or the user unblocking themselves.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Numeric ID of the user to unblock
+ *     responses:
+ *       200:
+ *         description: User unblocked successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'User unblocked successfully'
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized - no token provided
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       403:
+ *         description: Forbidden - insufficient permissions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 export const unblockUser = async (req: Request, res: Response) => {
   try {
     const userId = parseInt(req.params.id);

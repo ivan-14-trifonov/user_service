@@ -5,6 +5,7 @@ import 'reflect-metadata';
 import { AppDataSource } from './config/database';
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
+import { specs, swaggerUi } from './swagger';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,6 +18,9 @@ app.use(express.json()); // Parse JSON bodies
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+
+// Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // Health check endpoint
 app.get('/health', (req: Request, res: Response) => {

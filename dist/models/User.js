@@ -41,7 +41,7 @@ __decorate([
 ], User.prototype, "password", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        type: 'enum',
+        type: process.env.DB_TYPE === 'sqlite' ? 'varchar' : 'enum',
         enum: UserRole,
         default: UserRole.USER
     }),
