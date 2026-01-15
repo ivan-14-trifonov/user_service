@@ -45,27 +45,61 @@
    ```bash
    git clone https://github.com/ivan-14-trifonov/user_service.git
    ```
-2. Установите зависимости:
+2. Перейдите в директорию проекта:
    ```bash
    cd user_service
+   ```
+3. Установите и запустите PostgreSQL (альтернативно можно использовать SQLite, об этом смотрите пункт 6):
+   - **macOS (с помощью Homebrew):**
+     ```bash
+     # Установите PostgreSQL
+     brew install postgresql
+
+     # Запустите PostgreSQL как службу
+     brew services start postgresql
+     ```
+   - **Ubuntu/Linux:**
+     ```bash
+     # Установите PostgreSQL
+     sudo apt update
+     sudo apt install postgresql postgresql-contrib
+
+     # Запустите PostgreSQL
+     sudo systemctl start postgresql
+     sudo systemctl enable postgresql
+     ```
+   - **Windows:**
+     - Скачайте и установите PostgreSQL с официального сайта: https://www.postgresql.org/download/windows/
+     - Во время установки задайте пароль для пользователя postgres
+     - Запустите PostgreSQL через PostgreSQL Service или pgAdmin
+4. Установите зависимости:
+   ```bash
    npm install
    ```
-3. Сгенерируйте секретный ключ JWT с помощью Node.js (или другим способом):
+5. Сгенерируйте секретный ключ JWT с помощью Node.js (или другим способом):
    ```bash
    node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
    ```
    **Важно**: Никогда не коммитьте реальный JWT_SECRET в репозиторий. Файл `.env` уже игнорируется благодаря файлу `.gitignore`, который мы создали.
-4. Создайте файл `.env` и установите следующие переменные окружения:
-   ```env
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_USERNAME=postgres
-   DB_PASSWORD=postgres
-   DB_NAME=user_management_db
-   JWT_SECRET=ваш_секретный_ключ_jwt
-   PORT=3000
-   ```
-5. Запустите приложение:
+6. Создайте файл `.env` и установите переменные окружения:
+   - Для использования PostgreSQL (по умолчанию):
+     ```env
+     DB_TYPE=postgres
+     DB_HOST=localhost
+     DB_PORT=5432
+     DB_USERNAME=postgres
+     DB_PASSWORD=postgres
+     DB_NAME=user_management_db
+     JWT_SECRET=ваш_секретный_ключ_jwt
+     PORT=3000
+     ```
+   - Для использования SQLite (если PostgreSQL недоступен):
+     ```env
+     DB_TYPE=sqlite
+     JWT_SECRET=ваш_секретный_ключ_jwt
+     PORT=3000
+     ```
+7. Запустите приложение:
    ```bash
    npm run dev
    ```
