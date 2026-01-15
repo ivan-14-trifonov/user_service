@@ -49,7 +49,7 @@
    ```bash
    cd user_service
    ```
-3. Установите и запустите PostgreSQL (альтернативно можно использовать SQLite, об этом смотрите пункт 6):
+3. Установите и запустите PostgreSQL:
    - **macOS (с помощью Homebrew):**
      ```bash
      # Установите PostgreSQL
@@ -90,12 +90,6 @@
      DB_USERNAME=postgres
      DB_PASSWORD=postgres
      DB_NAME=user_management_db
-     JWT_SECRET=ваш_секретный_ключ_jwt
-     PORT=3000
-     ```
-   - Для использования SQLite (если PostgreSQL недоступен):
-     ```env
-     DB_TYPE=sqlite
      JWT_SECRET=ваш_секретный_ключ_jwt
      PORT=3000
      ```
